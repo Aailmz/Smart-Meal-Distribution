@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4683756A-6A54-4983-8F1E-309CA8BBD844}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>LKS2026</RootNamespace>
+    <AssemblyName>LKS2026</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Helpers\Database.cs" />
+    <Compile Include="Helpers\Session.cs" />
+    <Compile Include="Helpers\UiTheme.cs" />
+    <Compile Include="Helpers\UiHelper.cs" />
+    <Compile Include="Forms\FormPegawaiEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormPegawaiEdit.Designer.cs">
+      <DependentUpon>FormPegawaiEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormBahanBakuEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormBahanBakuEdit.Designer.cs">
+      <DependentUpon>FormBahanBakuEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSekolahEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSekolahEdit.Designer.cs">
+      <DependentUpon>FormSekolahEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormKebutuhanEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormKebutuhanEdit.Designer.cs">
+      <DependentUpon>FormKebutuhanEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormPesananEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormPesananEdit.Designer.cs">
+      <DependentUpon>FormPesananEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormMonitoringEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormMonitoringEdit.Designer.cs">
+      <DependentUpon>FormMonitoringEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormLogin.Designer.cs">
+      <DependentUpon>FormLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormMain.Designer.cs">
+      <DependentUpon>FormMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcDashboard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcDashboard.Designer.cs">
+      <DependentUpon>UcDashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcPegawai.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcPegawai.Designer.cs">
+      <DependentUpon>UcPegawai.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcBahanBaku.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcBahanBaku.Designer.cs">
+      <DependentUpon>UcBahanBaku.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcSekolah.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcSekolah.Designer.cs">
+      <DependentUpon>UcSekolah.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcKebutuhanDapur.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcKebutuhanDapur.Designer.cs">
+      <DependentUpon>UcKebutuhanDapur.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcPesananPemasok.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcPesananPemasok.Designer.cs">
+      <DependentUpon>UcPesananPemasok.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcMonitoring.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcMonitoring.Designer.cs">
+      <DependentUpon>UcMonitoring.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcLaporan.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcLaporan.Designer.cs">
+      <DependentUpon>UcLaporan.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UcProfil.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="UserControls\UcProfil.Designer.cs">
+      <DependentUpon>UcProfil.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

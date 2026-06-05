@@ -1,0 +1,115 @@
+## Database Setup (SQL Server)
+
+### Step 1: Open SQL Server
+
+Open one of the following tools:
+
+- SQL Server Management Studio (SSMS)
+- Azure Data Studio
+
+Connect to your SQL Server instance.
+
+Examples:
+
+```text
+(localdb)\MSSQLLocalDB
+```
+
+```text
+.\SQLEXPRESS
+```
+
+```text
+localhost
+```
+
+---
+
+### Step 2: Execute Database Script
+
+Navigate to:
+
+```text
+Database/database.sql
+```
+
+Open the script and execute it.
+
+The script will automatically:
+
+- Drop the existing database (if any)
+- Create the `SPPGDb` database
+- Create all required tables
+- Insert sample data
+
+After execution, verify that the database appears in SQL Server:
+
+```text
+SPPGDb
+```
+
+---
+
+### Step 3: Configure Connection String
+
+Open:
+
+```text
+SPPG/App.config
+```
+
+Locate the connection string:
+
+```xml
+<add name="SPPGDb"
+     connectionString="Data Source=(localdb)\MSSQLLocalDB;Initial Catalog=SPPGDb;Integrated Security=True"
+     providerName="System.Data.SqlClient" />
+```
+
+If you are using another SQL Server instance, replace the `Data Source` value.
+
+Example for SQL Server Express:
+
+```xml
+<add name="SPPGDb"
+     connectionString="Data Source=.\SQLEXPRESS;Initial Catalog=SPPGDb;Integrated Security=True"
+     providerName="System.Data.SqlClient" />
+```
+
+Example for localhost:
+
+```xml
+<add name="SPPGDb"
+     connectionString="Data Source=localhost;Initial Catalog=SPPGDb;Integrated Security=True"
+     providerName="System.Data.SqlClient" />
+```
+
+---
+
+### Step 4: Verify Database Connection
+
+Open the solution in Visual Studio 2022 and run the application.
+
+If the login screen appears successfully, the database connection has been established correctly.
+
+---
+
+### Using SQL Server LocalDB
+
+To check available LocalDB instances:
+
+```bash
+sqllocaldb info
+```
+
+To start the default instance:
+
+```bash
+sqllocaldb start MSSQLLocalDB
+```
+
+To view detailed information:
+
+```bash
+sqllocaldb info MSSQLLocalDB
+```
