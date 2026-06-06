@@ -49,8 +49,6 @@
   <ItemGroup>
     <Compile Include="Helpers\Database.cs" />
     <Compile Include="Helpers\Session.cs" />
-    <Compile Include="Helpers\UiTheme.cs" />
-    <Compile Include="Helpers\UiHelper.cs" />
     <Compile Include="Forms\FormPegawaiEdit.cs">
       <SubType>Form</SubType>
     </Compile>

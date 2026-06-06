@@ -21,19 +21,19 @@ namespace LKS2026.Forms
             try
             {
                 var dt = Database.Query("SELECT * FROM Employees WHERE EmployeeId=@i", Database.P("@i", _id));
-                if (dt.Rows.Count == 0) { UiHelper.Warn("Data tidak ditemukan."); Close(); return; }
+                if (dt.Rows.Count == 0) { MessageBox.Show("Data tidak ditemukan.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); Close(); return; }
                 var r = dt.Rows[0];
                 txtNama.Text = r["EmployeeName"].ToString();
                 txtJabatan.Text = r["Position"].ToString();
                 txtHp.Text = r["Phone"].ToString();
                 txtAlamat.Text = r["Address"].ToString();
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Gagal memuat: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void BtnSimpan_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNama.Text)) { UiHelper.Warn("Nama pegawai wajib diisi."); return; }
+            if (string.IsNullOrWhiteSpace(txtNama.Text)) { MessageBox.Show("Nama pegawai wajib diisi.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
 
             try
             {
@@ -57,7 +57,7 @@ namespace LKS2026.Forms
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception ex) { UiHelper.Error("Gagal menyimpan: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Gagal menyimpan: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void BtnBatal_Click(object sender, EventArgs e) { DialogResult = DialogResult.Cancel; Close(); }

@@ -33,7 +33,10 @@ namespace LKS2026.UserControls
                 sql += " ORDER BY SchoolId DESC";
                 grid.DataSource = Database.Query(sql, p);
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnTambah_Click(object sender, EventArgs e)
@@ -41,24 +44,30 @@ namespace LKS2026.UserControls
             using (var f = new FormSekolahEdit())
                 if (f.ShowDialog() == DialogResult.OK) LoadData(txtCari.Text);
         }
+
         private void BtnUbah_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih sekolah terlebih dahulu."); return; }
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih sekolah terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             using (var f = new FormSekolahEdit(Convert.ToInt32(grid.CurrentRow.Cells[0].Value)))
                 if (f.ShowDialog() == DialogResult.OK) LoadData(txtCari.Text);
         }
+
         private void BtnHapus_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih sekolah terlebih dahulu."); return; }
-            if (!UiHelper.ConfirmDelete("sekolah")) return;
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih sekolah terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+            if (MessageBox.Show("Yakin ingin menghapus sekolah yang dipilih?\nTindakan ini tidak dapat dibatalkan.", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             try
             {
                 Database.Execute("DELETE FROM Schools WHERE SchoolId=@i", Database.P("@i", Convert.ToInt32(grid.CurrentRow.Cells[0].Value)));
                 LoadData(txtCari.Text);
-                UiHelper.Info("Data berhasil dihapus.");
+                MessageBox.Show("Data berhasil dihapus.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex) { UiHelper.Error("Gagal menghapus: " + ex.Message + "\n(Mungkin sekolah masih dipakai di distribusi.)"); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal menghapus: " + ex.Message + "\n(Mungkin sekolah masih dipakai di distribusi.)", "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
         private void TxtCari_TextChanged(object sender, EventArgs e) => LoadData(txtCari.Text);
     }
 }

@@ -1,5 +1,4 @@
 using System;
-using System.Data;
 using System.Windows.Forms;
 using LKS2026.Forms;
 using LKS2026.Helpers;
@@ -12,12 +11,6 @@ namespace LKS2026.UserControls
         {
             InitializeComponent();
             LoadData();
-            ApplyRoleAccess();
-        }
-
-        private void ApplyRoleAccess()
-        {
-            // Supervisor hanya view
             bool canEdit = Session.IsPetugas;
             btnTambah.Enabled = canEdit;
             btnUbah.Enabled = canEdit;
@@ -42,42 +35,36 @@ namespace LKS2026.UserControls
             }
             catch (Exception ex)
             {
-                UiHelper.Error("Gagal memuat data pegawai: " + ex.Message);
+                MessageBox.Show("Gagal memuat data pegawai: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void BtnTambah_Click(object sender, EventArgs e)
         {
             using (var f = new FormPegawaiEdit())
-            {
                 if (f.ShowDialog() == DialogResult.OK) LoadData(txtCari.Text);
-            }
         }
 
         private void BtnUbah_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih data pegawai terlebih dahulu."); return; }
-            int id = Convert.ToInt32(grid.CurrentRow.Cells[0].Value);
-            using (var f = new FormPegawaiEdit(id))
-            {
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih data pegawai terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+            using (var f = new FormPegawaiEdit(Convert.ToInt32(grid.CurrentRow.Cells[0].Value)))
                 if (f.ShowDialog() == DialogResult.OK) LoadData(txtCari.Text);
-            }
         }
 
         private void BtnHapus_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih data pegawai terlebih dahulu."); return; }
-            if (!UiHelper.ConfirmDelete("pegawai")) return;
-            int id = Convert.ToInt32(grid.CurrentRow.Cells[0].Value);
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih data pegawai terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+            if (MessageBox.Show("Yakin ingin menghapus pegawai yang dipilih?\nTindakan ini tidak dapat dibatalkan.", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             try
             {
-                Database.Execute("DELETE FROM Employees WHERE EmployeeId=@i", Database.P("@i", id));
+                Database.Execute("DELETE FROM Employees WHERE EmployeeId=@i", Database.P("@i", Convert.ToInt32(grid.CurrentRow.Cells[0].Value)));
                 LoadData(txtCari.Text);
-                UiHelper.Info("Data pegawai berhasil dihapus.");
+                MessageBox.Show("Data pegawai berhasil dihapus.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                UiHelper.Error("Gagal menghapus: " + ex.Message);
+                MessageBox.Show("Gagal menghapus: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 

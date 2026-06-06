@@ -37,7 +37,10 @@ namespace LKS2026.UserControls
                 if (grid.Columns.Contains("Stok"))
                     grid.Columns["Stok"].DefaultCellStyle.Format = "N2";
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat data: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat data: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnTambah_Click(object sender, EventArgs e)
@@ -48,23 +51,26 @@ namespace LKS2026.UserControls
 
         private void BtnUbah_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih bahan baku terlebih dahulu."); return; }
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih bahan baku terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             using (var f = new FormBahanBakuEdit(Convert.ToInt32(grid.CurrentRow.Cells[0].Value)))
                 if (f.ShowDialog() == DialogResult.OK) LoadData(txtCari.Text);
         }
 
         private void BtnHapus_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih bahan baku terlebih dahulu."); return; }
-            if (!UiHelper.ConfirmDelete("bahan baku")) return;
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih bahan baku terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+            if (MessageBox.Show("Yakin ingin menghapus bahan baku yang dipilih?\nTindakan ini tidak dapat dibatalkan.", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             try
             {
                 Database.Execute("DELETE FROM RawMaterials WHERE MaterialId=@i",
                     Database.P("@i", Convert.ToInt32(grid.CurrentRow.Cells[0].Value)));
                 LoadData(txtCari.Text);
-                UiHelper.Info("Data berhasil dihapus.");
+                MessageBox.Show("Data berhasil dihapus.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex) { UiHelper.Error("Gagal menghapus: " + ex.Message + "\n(Mungkin bahan masih dipakai di kebutuhan/pesanan.)"); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal menghapus: " + ex.Message + "\n(Mungkin bahan masih dipakai di kebutuhan/pesanan.)", "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void TxtCari_TextChanged(object sender, EventArgs e) => LoadData(txtCari.Text);

@@ -24,7 +24,7 @@ namespace LKS2026.Forms
                 cmbSekolah.DisplayMember = "SchoolName";
                 cmbSekolah.ValueMember = "SchoolId";
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat sekolah: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Gagal memuat sekolah: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void LoadEntity()
@@ -32,7 +32,7 @@ namespace LKS2026.Forms
             try
             {
                 var dt = Database.Query("SELECT * FROM ProductionDistribution WHERE ProcessId=@i", Database.P("@i", _id));
-                if (dt.Rows.Count == 0) { UiHelper.Warn("Data tidak ditemukan."); Close(); return; }
+                if (dt.Rows.Count == 0) { MessageBox.Show("Data tidak ditemukan.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); Close(); return; }
                 var r = dt.Rows[0];
                 dtTanggal.Value = Convert.ToDateTime(r["ProcessDate"]);
                 cmbSekolah.SelectedValue = Convert.ToInt32(r["SchoolId"]);
@@ -41,12 +41,12 @@ namespace LKS2026.Forms
                 cmbDist.SelectedItem = r["DistributionStatus"].ToString();
                 txtCatatan.Text = r["Notes"]?.ToString();
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Gagal memuat: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void BtnSimpan_Click(object sender, EventArgs e)
         {
-            if (cmbSekolah.SelectedValue == null) { UiHelper.Warn("Pilih sekolah penerima."); return; }
+            if (cmbSekolah.SelectedValue == null) { MessageBox.Show("Pilih sekolah penerima.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
 
             try
             {
@@ -79,7 +79,7 @@ namespace LKS2026.Forms
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception ex) { UiHelper.Error("Gagal menyimpan: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Gagal menyimpan: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void BtnBatal_Click(object sender, EventArgs e) { DialogResult = DialogResult.Cancel; Close(); }

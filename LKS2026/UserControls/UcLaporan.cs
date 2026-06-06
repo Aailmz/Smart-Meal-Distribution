@@ -1,6 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Drawing;
 using System.Windows.Forms;
 using LKS2026.Helpers;
 
@@ -15,7 +15,38 @@ namespace LKS2026.UserControls
             LoadCurrentReport();
         }
 
+        // Style grid laporan biar seragam dengan grid lain
+        private void StyleGrid(DataGridView g)
+        {
+            g.BackgroundColor = Color.White;
+            g.BorderStyle = BorderStyle.None;
+            g.GridColor = Color.FromArgb(230, 230, 230);
+            g.RowHeadersVisible = false;
+            g.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            g.MultiSelect = false;
+            g.AllowUserToAddRows = false;
+            g.AllowUserToDeleteRows = false;
+            g.AllowUserToResizeRows = false;
+            g.ReadOnly = true;
+            g.RowTemplate.Height = 32;
+            g.EnableHeadersVisualStyles = false;
+            g.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            g.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(0, 120, 215);
+            g.ColumnHeadersDefaultCellStyle.ForeColor = Color.White;
+            g.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
+            g.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            g.ColumnHeadersDefaultCellStyle.Padding = new Padding(8, 0, 0, 0);
+            g.ColumnHeadersHeight = 38;
+            g.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
+            g.DefaultCellStyle.Font = new Font("Segoe UI", 9.5F);
+            g.DefaultCellStyle.SelectionBackColor = Color.FromArgb(204, 228, 247);
+            g.DefaultCellStyle.SelectionForeColor = Color.FromArgb(33, 37, 41);
+            g.DefaultCellStyle.Padding = new Padding(6, 0, 0, 0);
+            g.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(248, 249, 250);
+        }
+
         private void BtnFilter_Click(object sender, EventArgs e) => LoadCurrentReport();
+
         private void BtnReset_Click(object sender, EventArgs e)
         {
             dtAwal.Checked = false;
@@ -44,7 +75,7 @@ namespace LKS2026.UserControls
                             @"SELECT MaterialName AS [Nama], Category AS [Kategori], Unit AS [Satuan],
                                      Stock AS [Stok], EstimatedPrice AS [Harga]
                               FROM RawMaterials ORDER BY MaterialName");
-                        UiHelper.StyleGrid(gridBahan);
+                        StyleGrid(gridBahan);
                         break;
                     case 1: // Kebutuhan Dapur
                     {
@@ -54,7 +85,7 @@ namespace LKS2026.UserControls
                                      k.Unit AS [Satuan], k.Notes AS [Keterangan]
                               FROM KitchenNeeds k INNER JOIN RawMaterials m ON k.MaterialId=m.MaterialId"
                             + clause + " ORDER BY k.NeedDate DESC", pars);
-                        UiHelper.StyleGrid(gridKebutuhan);
+                        StyleGrid(gridKebutuhan);
                         if (gridKebutuhan.Columns.Contains("Tanggal")) gridKebutuhan.Columns["Tanggal"].DefaultCellStyle.Format = "dd MMM yyyy";
                         break;
                     }
@@ -66,7 +97,7 @@ namespace LKS2026.UserControls
                                      o.OrderQuantity AS [Jumlah], o.Unit AS [Satuan], o.Status AS [Status]
                               FROM SupplierOrders o INNER JOIN RawMaterials m ON o.MaterialId=m.MaterialId"
                             + clause + " ORDER BY o.OrderDate DESC", pars);
-                        UiHelper.StyleGrid(gridPesanan);
+                        StyleGrid(gridPesanan);
                         if (gridPesanan.Columns.Contains("Tanggal")) gridPesanan.Columns["Tanggal"].DefaultCellStyle.Format = "dd MMM yyyy";
                         break;
                     }
@@ -78,13 +109,16 @@ namespace LKS2026.UserControls
                                      p.ProductionStatus AS [Produksi], p.DistributionStatus AS [Distribusi]
                               FROM ProductionDistribution p INNER JOIN Schools s ON p.SchoolId=s.SchoolId"
                             + clause + " ORDER BY p.ProcessDate DESC", pars);
-                        UiHelper.StyleGrid(gridDistribusi);
+                        StyleGrid(gridDistribusi);
                         if (gridDistribusi.Columns.Contains("Tanggal")) gridDistribusi.Columns["Tanggal"].DefaultCellStyle.Format = "dd MMM yyyy";
                         break;
                     }
                 }
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat laporan: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat laporan: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

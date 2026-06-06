@@ -33,16 +33,19 @@ namespace LKS2026.UserControls
                 int totDst  = ScalarInt("SELECT COUNT(*) FROM ProductionDistribution");
 
                 flowCards.Controls.Clear();
-                flowCards.Controls.Add(MakeCard("Total Pegawai",         totPeg.ToString(),  UiTheme.Primary));
-                flowCards.Controls.Add(MakeCard("Total Bahan Baku",      totBhn.ToString(),  UiTheme.Info));
-                flowCards.Controls.Add(MakeCard("Total Sekolah",         totSek.ToString(),  UiTheme.Success));
-                flowCards.Controls.Add(MakeCard("Total Pesanan",         totPsn.ToString(),  UiTheme.PrimaryDark));
-                flowCards.Controls.Add(MakeCard("Pesanan Pending",       psnPnd.ToString(),  UiTheme.Warning));
-                flowCards.Controls.Add(MakeCard("Pesanan Diproses",      psnDpr.ToString(),  UiTheme.Info));
-                flowCards.Controls.Add(MakeCard("Pesanan Selesai",       psnSls.ToString(),  UiTheme.Success));
-                flowCards.Controls.Add(MakeCard("Data Distribusi",       totDst.ToString(),  UiTheme.PrimaryDark));
+                flowCards.Controls.Add(MakeCard("Total Pegawai",    totPeg.ToString(), Color.FromArgb(0, 120, 215)));
+                flowCards.Controls.Add(MakeCard("Total Bahan Baku", totBhn.ToString(), Color.FromArgb(23, 162, 184)));
+                flowCards.Controls.Add(MakeCard("Total Sekolah",    totSek.ToString(), Color.FromArgb(40, 167, 69)));
+                flowCards.Controls.Add(MakeCard("Total Pesanan",    totPsn.ToString(), Color.FromArgb(0, 90, 158)));
+                flowCards.Controls.Add(MakeCard("Pesanan Pending",  psnPnd.ToString(), Color.FromArgb(255, 193, 7)));
+                flowCards.Controls.Add(MakeCard("Pesanan Diproses", psnDpr.ToString(), Color.FromArgb(23, 162, 184)));
+                flowCards.Controls.Add(MakeCard("Pesanan Selesai",  psnSls.ToString(), Color.FromArgb(40, 167, 69)));
+                flowCards.Controls.Add(MakeCard("Data Distribusi",  totDst.ToString(), Color.FromArgb(0, 90, 158)));
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat dashboard: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat dashboard: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private Panel MakeCard(string title, string value, Color color)
@@ -63,7 +66,7 @@ namespace LKS2026.UserControls
             {
                 Text = title,
                 Font = new Font("Segoe UI", 10F, FontStyle.Regular),
-                ForeColor = UiTheme.Muted,
+                ForeColor = Color.FromArgb(108, 117, 125),
                 AutoSize = false,
                 Location = new Point(20, 18),
                 Size = new Size(210, 24)

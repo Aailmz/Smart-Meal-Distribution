@@ -57,15 +57,15 @@ namespace LKS2026.Forms
                 TextAlign = ContentAlignment.MiddleLeft,
                 Dock = DockStyle.Top,
                 Height = 46,
-                BackColor = UiTheme.SidebarBg,
-                ForeColor = UiTheme.SidebarText,
+                BackColor = Color.FromArgb(33, 37, 41),
+                ForeColor = Color.White,
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 10.5F, FontStyle.Regular),
                 Cursor = Cursors.Hand,
                 Padding = new Padding(10, 0, 0, 0)
             };
             btn.FlatAppearance.BorderSize = 0;
-            btn.FlatAppearance.MouseOverBackColor = UiTheme.SidebarItem;
+            btn.FlatAppearance.MouseOverBackColor = Color.FromArgb(52, 58, 64);
 
             var entry = new MenuButton { Key = label, Button = btn, Factory = factory };
             btn.Click += (s, e) => ActivateMenu(entry);
@@ -81,11 +81,11 @@ namespace LKS2026.Forms
         {
             if (_activeButton != null)
             {
-                _activeButton.Button.BackColor = UiTheme.SidebarBg;
+                _activeButton.Button.BackColor = Color.FromArgb(33, 37, 41);
                 _activeButton.Button.Font = new Font("Segoe UI", 10.5F, FontStyle.Regular);
             }
 
-            entry.Button.BackColor = UiTheme.SidebarActive;
+            entry.Button.BackColor = Color.FromArgb(0, 120, 215);
             entry.Button.Font = new Font("Segoe UI", 10.5F, FontStyle.Bold);
             _activeButton = entry;
 
@@ -108,8 +108,8 @@ namespace LKS2026.Forms
                     Text = "Gagal memuat halaman: " + ex.Message,
                     Dock = DockStyle.Fill,
                     TextAlign = ContentAlignment.MiddleCenter,
-                    ForeColor = UiTheme.Danger,
-                    Font = UiTheme.FontNormal
+                    ForeColor = Color.FromArgb(220, 53, 69),
+                    Font = new Font("Segoe UI", 10F)
                 };
                 pnlContent.Controls.Add(lbl);
             }

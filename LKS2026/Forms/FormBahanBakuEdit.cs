@@ -21,7 +21,7 @@ namespace LKS2026.Forms
             try
             {
                 var dt = Database.Query("SELECT * FROM RawMaterials WHERE MaterialId=@i", Database.P("@i", _id));
-                if (dt.Rows.Count == 0) { UiHelper.Warn("Data tidak ditemukan."); Close(); return; }
+                if (dt.Rows.Count == 0) { MessageBox.Show("Data tidak ditemukan.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); Close(); return; }
                 var r = dt.Rows[0];
                 txtNama.Text = r["MaterialName"].ToString();
                 cmbKategori.Text = r["Category"].ToString();
@@ -29,16 +29,16 @@ namespace LKS2026.Forms
                 txtStok.Text = Convert.ToDecimal(r["Stock"]).ToString(CultureInfo.InvariantCulture);
                 txtHarga.Text = Convert.ToDecimal(r["EstimatedPrice"]).ToString(CultureInfo.InvariantCulture);
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Gagal memuat: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void BtnSimpan_Click(object sender, EventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(txtNama.Text)) { UiHelper.Warn("Nama bahan wajib diisi."); return; }
+            if (string.IsNullOrWhiteSpace(txtNama.Text)) { MessageBox.Show("Nama bahan wajib diisi.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             if (!decimal.TryParse(txtStok.Text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal stok) || stok < 0)
-            { UiHelper.Warn("Stok harus angka >= 0."); return; }
+            { MessageBox.Show("Stok harus angka >= 0.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             if (!decimal.TryParse(txtHarga.Text.Replace(",", "."), NumberStyles.Any, CultureInfo.InvariantCulture, out decimal harga) || harga < 0)
-            { UiHelper.Warn("Harga harus angka >= 0."); return; }
+            { MessageBox.Show("Harga harus angka >= 0.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
 
             try
             {
@@ -64,7 +64,7 @@ namespace LKS2026.Forms
                 DialogResult = DialogResult.OK;
                 Close();
             }
-            catch (Exception ex) { UiHelper.Error("Gagal menyimpan: " + ex.Message); }
+            catch (Exception ex) { MessageBox.Show("Gagal menyimpan: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error); }
         }
 
         private void BtnBatal_Click(object sender, EventArgs e) { DialogResult = DialogResult.Cancel; Close(); }

@@ -21,6 +21,19 @@ namespace LKS2026.UserControls
             btnStatus.Enabled = true; // validasi status diizinkan untuk kedua role
         }
 
+        // Warna badge status: Pending=kuning, Diproses=biru info, Selesai=hijau
+        private Color StatusColor(string status)
+        {
+            if (string.IsNullOrEmpty(status)) return Color.FromArgb(108, 117, 125);
+            switch (status.Trim().ToLowerInvariant())
+            {
+                case "pending": return Color.FromArgb(255, 193, 7);
+                case "diproses": return Color.FromArgb(23, 162, 184);
+                case "selesai": return Color.FromArgb(40, 167, 69);
+                default: return Color.FromArgb(108, 117, 125);
+            }
+        }
+
         private void LoadData(string search = null)
         {
             try
@@ -41,7 +54,10 @@ namespace LKS2026.UserControls
                 if (grid.Columns.Contains("Tanggal")) grid.Columns["Tanggal"].DefaultCellStyle.Format = "dd MMM yyyy";
                 if (grid.Columns.Contains("Jumlah")) grid.Columns["Jumlah"].DefaultCellStyle.Format = "N2";
             }
-            catch (Exception ex) { UiHelper.Error("Gagal memuat: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal memuat: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void Grid_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -49,10 +65,10 @@ namespace LKS2026.UserControls
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
             if (grid.Columns[e.ColumnIndex].Name == "Status" && e.Value != null)
             {
-                var status = e.Value.ToString();
-                e.CellStyle.BackColor = UiTheme.StatusColor(status);
+                var color = StatusColor(e.Value.ToString());
+                e.CellStyle.BackColor = color;
                 e.CellStyle.ForeColor = Color.White;
-                e.CellStyle.SelectionBackColor = UiTheme.StatusColor(status);
+                e.CellStyle.SelectionBackColor = color;
                 e.CellStyle.SelectionForeColor = Color.White;
                 e.CellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 e.CellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Bold);
@@ -64,28 +80,33 @@ namespace LKS2026.UserControls
             using (var f = new FormPesananEdit())
                 if (f.ShowDialog() == DialogResult.OK) LoadData(txtCari.Text);
         }
+
         private void BtnUbah_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih pesanan terlebih dahulu."); return; }
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih pesanan terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             using (var f = new FormPesananEdit(Convert.ToInt32(grid.CurrentRow.Cells[0].Value)))
                 if (f.ShowDialog() == DialogResult.OK) LoadData(txtCari.Text);
         }
+
         private void BtnHapus_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih pesanan terlebih dahulu."); return; }
-            if (!UiHelper.ConfirmDelete("pesanan")) return;
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih pesanan terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
+            if (MessageBox.Show("Yakin ingin menghapus pesanan yang dipilih?\nTindakan ini tidak dapat dibatalkan.", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             try
             {
                 Database.Execute("DELETE FROM SupplierOrders WHERE OrderId=@i", Database.P("@i", Convert.ToInt32(grid.CurrentRow.Cells[0].Value)));
                 LoadData(txtCari.Text);
-                UiHelper.Info("Data berhasil dihapus.");
+                MessageBox.Show("Data berhasil dihapus.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            catch (Exception ex) { UiHelper.Error("Gagal menghapus: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal menghapus: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void BtnStatus_Click(object sender, EventArgs e)
         {
-            if (grid.CurrentRow == null) { UiHelper.Warn("Pilih pesanan terlebih dahulu."); return; }
+            if (grid.CurrentRow == null) { MessageBox.Show("Pilih pesanan terlebih dahulu.", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning); return; }
             string current = grid.CurrentRow.Cells["Status"].Value?.ToString();
             string next = current == "Pending" ? "Diproses" : current == "Diproses" ? "Selesai" : "Pending";
 
@@ -99,7 +120,10 @@ namespace LKS2026.UserControls
                     Database.P("@i", Convert.ToInt32(grid.CurrentRow.Cells[0].Value)));
                 LoadData(txtCari.Text);
             }
-            catch (Exception ex) { UiHelper.Error("Gagal update status: " + ex.Message); }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Gagal update status: " + ex.Message, "Terjadi Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void TxtCari_TextChanged(object sender, EventArgs e) => LoadData(txtCari.Text);
