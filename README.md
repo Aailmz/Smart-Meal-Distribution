@@ -191,6 +191,7 @@ Examples:
 ```text
 localhost
 ```
+For database setup instructions, see [Database Setup Guide](Database/DB_Setup.md).
 
 ---
 
